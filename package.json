@@ -14,7 +14,8 @@
     "clean": "rimraf dist",
     "build:prod": "npm run clean && npm run build",
     "lint": "eslint src --ext .ts,.tsx --fix",
-    "test": "echo \"No tests specified\" && exit 0"
+    "test": "echo \"No tests specified\" && exit 0",
+    "vercel-build": "npm run build"
   },
   "dependencies": {
     "@types/react-router-dom": "^5.3.3",

@@ -108,7 +108,7 @@ See the [Architecture Diagram](#architecture-diagram) above for a visual overvie
 ├── default-pipelines.spinnaker.yaml # Spinnaker pipeline config
 ├── tsconfig*.json             # TypeScript configs
 ├── tailwind.config.js         # TailwindCSS config
-├── package.json, yarn.lock    # Node dependencies
+├── package.json, package-lock.json    # Node dependencies
 └── README.md                  # Main project documentation
 ```
 
@@ -131,7 +131,7 @@ See the [Architecture Diagram](#architecture-diagram) above for a visual overvie
 - **default-pipelines.spinnaker.yaml**: Spinnaker pipeline config.
 - **tsconfig*.json**: TypeScript project configs.
 - **tailwind.config.js**: TailwindCSS config.
-- **package.json, yarn.lock**: Node dependencies and lockfile.
+- **package.json, package-lock.json**: Node dependencies and lockfile.
 
 ---
 
@@ -270,7 +270,7 @@ See the [Architecture Diagram](#architecture-diagram) above for a visual overvie
 ### Step-by-Step
 
 1. **Build**
-   - Run `yarn build` to bundle the app with Vite.
+   - Run `npm run build` to bundle the app with Vite.
 2. **Provision/Publish**
    - Use `scripts/deploy/main.sh` to provision or publish the service via Atlassian Atlas CLI and Bifrost.
    - `provision`: Deploys infrastructure as defined in `status-page-ssr.sd.yml`.
@@ -288,16 +288,16 @@ See the [Architecture Diagram](#architecture-diagram) above for a visual overvie
 
 - **Install dependencies:**
   ```sh
-  yarn install
+  npm install
   ```
 - **Run in development mode:**
   ```sh
-  yarn run dev
+  npm run dev
   ```
   - Starts Vite dev server, local Tesseract server, and Bifrost-like proxy.
 - **Build for production:**
   ```sh
-  yarn build
+  npm run build
   ```
 - **Debugging:**
   - Use browser dev tools for client-side issues.
