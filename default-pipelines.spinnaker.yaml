@@ -1,0 +1,35 @@
+schemaVersion: '1'
+timeZone: Asia/Kolkata
+pipelines:
+  - template: bifrostManagedRollout
+    namespace: spinnaker-status-page-ssr
+    nameSuffix: prod-pipeline # Optional, defaults to empty string. Used to distinguish between multiple main pipelines
+    slackChannel: '#status-page-web-ssr'
+    enabled: true
+    dynamicResponse: true # Set this to true if you are using Bifrost Template, otherwise set it to false
+    triggerTags:
+      - status-page-ssr-main # Valid values for trigger name are the branch name such as "main" or "master"
+    rollouts:
+      - environmentType: ddev
+        manual: true # defaults to false
+        notifications:
+          failure:
+            enabled: true
+            slackChannels:
+              - '#status-page-web-ssr'
+            message: 'Prod deployment fail, please check this out.'
+        rolloutTracks:
+          - track: main
+            deployDuring:
+              periods:
+                - '9:00 - 17:00'
+              days:
+                - 'Monday'
+                - 'Tuesday'
+                - 'Wednesday'
+                - 'Thursday'
+                - 'Friday'
+            releaseStages:
+              - targetEnvironments:
+                  - 'ddev'
+

@@ -1,0 +1,144 @@
+name: Status Page Ssr
+description: Status Page new SSR server for public page rendering
+organization: Engineering-Opsgenie
+
+notifications:
+  email: mpatel8@atlassian.com
+
+buildNumber: 'computeless' # reason: using Bifrost instead of normal compute
+
+computeClassification:
+  dataType:
+    - None # reason: no compute
+
+resources:
+- name: status-page-ssr
+  type: bifrost-frontend
+  attributes:
+    dataType:
+      - Atlassian/Configuration # reason: This resource knows frontend service configuration
+      - Atlassian/Static # reason: This resource serves frontend assets
+    consumer:
+      privateAccessOnly: true # Make this app accessible only while connected to Atlassian VPN
+      hasAltTrack: false
+      forwardHostHeader: true
+      hasBifrostTemplate: true
+      bifrostTemplateConfig:
+        instanceId: status-page-ssr
+    assetsCache:
+      assetsViaGateway: true
+
+environmentOverrides:
+  # dev environment intentionally omitted - this is used by the Bifrost team for development
+  stg-east: # config for all staging
+    resources:
+      - name: status-page-ssr
+        type: bifrost-frontend
+
+  prod-east: # config for all prod
+    resources:
+      - name: status-page-ssr
+        type: bifrost-frontend
+
+
+# description: StatusPage Public Page
+# organization: Engineering SP
+
+# notifications:
+#   email: mpatel8+status-page-web-ssr@atlassian.com
+
+# buildNumber: 'computeless' # reason: using Bifrost instead of normal compute
+
+# computeClassification:
+#   dataType:
+#     - None # reason: no compute
+
+# links:
+#   source:
+#     url: https://stash.atlassian.com/projects/CONFCLOUD/repos/confluence-frontend/browse
+
+# resources:
+#   - name: status-page-ssr
+#     type: bifrost-frontend
+#     attributes:
+#       dataType:
+#         - Atlassian/Configuration
+#         - Atlassian/Static
+#       consumer:
+#         hasAltTrack: true
+#         forwardHostHeader: true
+#         hasBifrostTemplate: true
+#         bifrostTemplateConfig:
+#           instanceId: status-page-ssr-672afc106f8
+#       assetsCache:
+#         assetsViaGateway: true
+#   - type: globaledge
+#     name: ingress
+#     attributes:
+#       ip_whitelist: # https://hello.atlassian.net/wiki/spaces/EDGE/pages/549190876/Edge+Managed+Public+IP+Lists+Machine+Consumable
+#         - public
+#       routes:
+#         - match:
+#             prefix: /
+#             headers:
+#               - name: 'x-bifrost-consumer'
+#                 regex: '.+'
+#           route:
+#             cluster: bifrost-gateway_upstream
+# environmentOverrides:
+#   adev:
+#     resources:
+#       - name: status-page-ssr
+#         type: bifrost-frontend
+#         attributes:
+#           consumer:
+#             cspOverrides:
+#               # `unsafe-inline` required until upstream emotion styles are removed.
+#               style-src: "'self' 'unsafe-inline'"
+#       - type: globaledge
+#         name: ingress
+#         attributes:
+#           domain:
+#             - status-page-ssr.adev.frontend.public.atl-paas.net
+#   staging:
+#     resources:
+#       - name: status-page-ssr
+#         type: bifrost-frontend
+#         attributes:
+#           consumer:
+#             cspOverrides:
+#               # `unsafe-inline` required until upstream emotion styles are removed.
+#               style-src: "'self' 'unsafe-inline'"
+#       - type: globaledge
+#         name: ingress
+#         attributes:
+#           domain:
+#             - status-page-ssr.stg-east.frontend.public.atl-paas.net
+#           trusted_proxy_only: true
+#           ip_whitelist:
+#             - CLOUDFRONT
+#             - AtlassianOffices
+#             - AtlassianBYOD
+#             - PartnerOffices
+#             - AssetnoteScanner
+#             - CloudNetworks
+#             - ROUTE53_HEALTHCHECKS
+#             - IpsecPartner
+#             - ForwardProxyAtlOnly
+#           routes:
+#             - match:
+#                 prefix: /gateway/api/
+#               route:
+#                 regex_rewrite:
+#                   pattern: /gateway/api/(.*)
+#                   substitution: /\1
+#                 cluster: stargate2_upstream
+#             - match:
+#                 prefix: /SetCST
+#               route:
+#                 cluster: sso-cookie_upstream
+#               logging:
+#                 scrub_uri: strip-query
+
+
+

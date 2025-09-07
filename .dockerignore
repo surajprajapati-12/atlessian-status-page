@@ -1,0 +1,15 @@
+node_modules
+.git
+.gitignore
+yarn-error.log
+*.md
+src/
+plugins/
+scripts/
+docs/
+*.ts
+*.tsx
+*.mmd
+*.sh
+*.yaml
+*.yml 

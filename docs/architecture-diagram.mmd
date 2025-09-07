@@ -1,0 +1,31 @@
+flowchart TD
+  A["User Request"] -->|"HTTP"| B["Express Server (server.ts)"]
+  B -->|"Vite Middleware"| C["Vite SSR Engine"]
+  C -->|"Loads"| D["SSR Entry (src/server/entry.tsx)"]
+  D -->|"Renders"| E["React App (App.tsx)"]
+  E -->|"Routes"| F1["StatusPage"]
+  E -->|"Routes"| F2["UptimePage"]
+  E -->|"Routes"| F3["IncidentHistoryPage"]
+  F1 -->|"Uses"| G1["Masthead"]
+  F1 -->|"Uses"| G2["PageStatus"]
+  F1 -->|"Uses"| G3["ComponentGroup"]
+  F1 -->|"Uses"| G4["IncidentsList"]
+  F1 -->|"Uses"| G5["PageFooter"]
+  G3 -->|"Uses"| H["ComponentItem"]
+  F1 -->|"Fetches"| I["API Handlers (src/server/apiHandlers.ts)"]
+  I -->|"Fetches"| J["npmjs.org Status API"]
+  B -->|"Serves"| K["index.html"]
+  K -->|"Hydrates"| L["Client Entry (src/client/main.tsx)"]
+  L -->|"Hydrates"| E
+  subgraph "Deployment"
+    M["status-page-ssr.sd.yml"]
+    N["default-pipelines.spinnaker.yaml"]
+    O["scripts/deploy/main.sh"]
+  end
+  M -->|"Defines"| P["Bifrost/Spinnaker Resources"]
+  N -->|"Defines"| Q["Rollout Pipelines"]
+  O -->|"Runs"| R["Atlas CLI"]
+  R -->|"Deploys"| B
+  P -->|"Configures"| B
+  Q -->|"Triggers"| R
+  style Deployment fill:#f9f,stroke:#333,stroke-width:2 
